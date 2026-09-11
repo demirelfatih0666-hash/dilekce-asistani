@@ -1,0 +1,36 @@
+name: Dilekce Asistani APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu al
+        uses: actions/checkout@v4
+
+      - name: Flutter kur
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Flutter proje yapisini olustur
+        run: |
+          flutter create --platforms=android --org com.fatihdemirel --project-name dilekce_asistani .
+          
+      - name: Paketleri yukle
+        run: flutter pub get
+
+      - name: APK olustur
+        run: flutter build apk --release
+
+      - name: APK dosyasini yukle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dilekce-Asistani-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
