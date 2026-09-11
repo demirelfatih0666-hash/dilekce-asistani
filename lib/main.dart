@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 void main() {
-  runApp(const DilekceAsistani());
+  runApp(const DilekceAsistaniApp());
 }
 
-class DilekceAsistani extends StatelessWidget {
-  const DilekceAsistani({super.key});
+class DilekceAsistaniApp extends StatelessWidget {
+  const DilekceAsistaniApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +15,8 @@ class DilekceAsistani extends StatelessWidget {
       title: 'Dilekçe Asistanı',
       theme: ThemeData(
         useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF3F518C),
-        scaffoldBackgroundColor: const Color(0xFFF7F6FC),
+        colorSchemeSeed: const Color(0xFF5366A3),
+        scaffoldBackgroundColor: const Color(0xFFF8F7FC),
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),
           filled: true,
@@ -28,47 +28,36 @@ class DilekceAsistani extends StatelessWidget {
   }
 }
 
-class Islem {
+class BelgeTipi {
   final String baslik;
-  final String aciklama;
+  final String kategori;
   final IconData ikon;
-  final String tur;
 
-  const Islem(this.baslik, this.aciklama, this.ikon, this.tur);
+  const BelgeTipi(this.baslik, this.kategori, this.ikon);
 }
 
 class AnaSayfa extends StatelessWidget {
   const AnaSayfa({super.key});
 
-  static const islemler = [
-    Islem('Genel Dilekçe', 'Sorununuzu anlatın, dilekçeniz hazırlansın.',
-        Icons.description_outlined, 'dilekce'),
-    Islem('Şikâyet / İtiraz', 'Kurum veya kişiyle ilgili başvuru hazırlayın.',
-        Icons.report_outlined, 'sikayet'),
-    Islem('Savunma Hazırla', 'Olayı anlatın, resmî savunma oluşturun.',
-        Icons.shield_outlined, 'savunma'),
-    Islem('Trafik Cezasına İtiraz', 'Ceza ve tebliğ bilgileriyle itiraz hazırlayın.',
-        Icons.traffic_outlined, 'trafik'),
-    Islem('Kaza Olay Beyanı', 'Kaza anını anlatın, olay beyanı oluşturun.',
-        Icons.car_crash_outlined, 'kaza'),
-    Islem('İşçi / Çalışma Hayatı', 'Mobbing, ücret ve işyeri sorunları.',
-        Icons.work_outline, 'isci'),
-    Islem('GSM / İnternet', 'Operatör, fatura, arıza ve abonelik sorunları.',
-        Icons.wifi_outlined, 'gsm'),
-    Islem('Mahkeme / Hukuki Başvuru', 'Olayınızı anlatın, başvuru taslağı hazırlayın.',
-        Icons.account_balance_outlined, 'hukuk'),
-    Islem('Gelen Resmî Yazıya Cevap', 'Size gelen yazıya resmî cevap hazırlayın.',
-        Icons.mark_email_read_outlined, 'cevap'),
-    Islem('Sendika İşlemleri', 'Sendikal yazışma ve başvurular.',
-        Icons.groups_outlined, 'sendika'),
-    Islem('Dernek İşlemleri', 'Dernek yazışmaları ve başvuruları.',
-        Icons.people_outline, 'dernek'),
-    Islem('Yönetim Kurulu Kararı', 'Karar defterine uygun karar taslağı.',
-        Icons.fact_check_outlined, 'karar'),
-    Islem('Sendika Tüzüğü', 'Sendika tüzüğü taslağı oluşturun.',
-        Icons.menu_book_outlined, 'sendikaTuzuk'),
-    Islem('Dernek Tüzüğü', 'Dernek tüzüğü taslağı oluşturun.',
-        Icons.library_books_outlined, 'dernekTuzuk'),
+  static const belgeler = <BelgeTipi>[
+    BelgeTipi('Genel Dilekçe', 'dilekce', Icons.description_outlined),
+    BelgeTipi('Savunma Hazırla', 'savunma', Icons.shield_outlined),
+    BelgeTipi('Şikâyet / İtiraz', 'sikayet', Icons.report_outlined),
+    BelgeTipi('Mobbing Başvurusu', 'mobbing', Icons.work_outline),
+    BelgeTipi('İşçi Alacak / İşveren Başvurusu', 'isci', Icons.badge_outlined),
+    BelgeTipi('Trafik Cezasına İtiraz', 'trafik', Icons.traffic_outlined),
+    BelgeTipi('Kaza Olay Tutanağı', 'kaza', Icons.car_crash_outlined),
+    BelgeTipi('Mahkeme / Hukuk Başvurusu', 'hukuk', Icons.gavel_outlined),
+    BelgeTipi('Tüketici Başvurusu', 'tuketici', Icons.shopping_bag_outlined),
+    BelgeTipi('GSM / İnternet Şikâyeti', 'gsm', Icons.wifi_outlined),
+    BelgeTipi('Kamu Kurumu Başvurusu', 'kamu', Icons.account_balance_outlined),
+    BelgeTipi('Gelen Resmî Yazıya Cevap', 'cevap', Icons.mark_email_read_outlined),
+    BelgeTipi('Sendika Yönetim Kurulu Kararı', 'sendikakarar', Icons.groups_outlined),
+    BelgeTipi('Sendika Resmî Yazısı', 'sendikayazi', Icons.history_edu_outlined),
+    BelgeTipi('Sendika Tüzüğü Taslağı', 'sendikatuzuk', Icons.menu_book_outlined),
+    BelgeTipi('Dernek Yönetim Kurulu Kararı', 'dernekkarar', Icons.people_outline),
+    BelgeTipi('Dernek Üyelik / İstifa İşlemi', 'dernekuyelik', Icons.person_outline),
+    BelgeTipi('Dernek Tüzüğü Taslağı', 'dernektuzuk', Icons.library_books_outlined),
   ];
 
   @override
@@ -82,19 +71,20 @@ class AnaSayfa extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
-            onPressed: () => showAboutDialog(
-              context: context,
-              applicationName: 'Dilekçe Asistanı',
-              applicationVersion: '1.0',
-              children: const [
-                Text('Resmî belge ve dilekçe hazırlama yardımcısı.'),
-                SizedBox(height: 8),
-                Text(
-                  'Geliştiren: Fatih Demirel',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
+            onPressed: () {
+              showAboutDialog(
+                context: context,
+                applicationName: 'Dilekçe Asistanı',
+                applicationVersion: '2.0',
+                children: const [
+                  Text('Geliştiren: Fatih Demirel'),
+                  SizedBox(height: 8),
+                  Text(
+                    'Belge taslakları kullanıcı tarafından kontrol edilerek kullanılmalıdır.',
+                  ),
+                ],
+              );
+            },
           ),
         ],
       ),
@@ -108,631 +98,787 @@ class AnaSayfa extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Ne hazırlamak istiyorsunuz?',
-                    style:
-                        TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    'Hangi belgeyi hazırlayacağız?',
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 6),
                   Text(
-                    'İşlem türünü seçin ve yaşadığınız durumu anlatın. '
-                    'Uygulama bilgilerinizi resmî belge düzenine dönüştürür.',
+                    'Konunuza uygun bölümü seçin. Her belge kendi bilgilerini sorar.',
                   ),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 8),
-          ...islemler.map(
-            (e) => Card(
+          const SizedBox(height: 10),
+          ...belgeler.map(
+            (b) => Card(
               child: ListTile(
-                leading: CircleAvatar(child: Icon(e.ikon)),
+                leading: Icon(b.ikon, size: 30),
                 title: Text(
-                  e.baslik,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                  b.baslik,
+                  style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
-                subtitle: Text(e.aciklama),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => e.tur == 'karar'
-                          ? const KararFormu()
-                          : e.tur == 'sendikaTuzuk' ||
-                                  e.tur == 'dernekTuzuk'
-                              ? TuzukFormu(tur: e.tur)
-                              : DilekceFormu(islem: e),
+                      builder: (_) => BelgeFormu(belge: b),
                     ),
                   );
                 },
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
           const Center(
             child: Text(
-              'Geliştiren: Fatih Demirel',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              'Dilekçe Asistanı\nGeliştiren: Fatih Demirel',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black54),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
         ],
       ),
     );
   }
 }
 
-class DilekceFormu extends StatefulWidget {
-  final Islem islem;
-  const DilekceFormu({super.key, required this.islem});
+class BelgeFormu extends StatefulWidget {
+  final BelgeTipi belge;
+
+  const BelgeFormu({super.key, required this.belge});
 
   @override
-  State<DilekceFormu> createState() => _DilekceFormuState();
+  State<BelgeFormu> createState() => _BelgeFormuState();
 }
 
-class _DilekceFormuState extends State<DilekceFormu> {
-  final ad = TextEditingController();
-  final kimlik = TextEditingController();
-  final adres = TextEditingController();
-  final telefon = TextEditingController();
-  final kurum = TextEditingController();
-  final olay = TextEditingController();
-  final detay = TextEditingController();
+class _BelgeFormuState extends State<BelgeFormu> {
+  final Map<String, TextEditingController> c = {};
 
-  @override
-  void dispose() {
-    for (final c in [ad, kimlik, adres, telefon, kurum, olay, detay]) {
-      c.dispose();
-    }
-    super.dispose();
+  TextEditingController ctrl(String key) {
+    return c.putIfAbsent(key, () => TextEditingController());
   }
 
-  String yardimciAlan() {
-    switch (widget.islem.tur) {
-      case 'trafik':
-        return 'Ceza tarihi, tebliğ tarihi, plaka, tutanak/seri no ve itiraz nedeniniz';
-      case 'kaza':
-        return 'Kaza tarihi-saati, yer, araç/plaka, karşı taraf, hasar ve varsa tanık bilgileri';
-      case 'gsm':
-        return 'Operatör, abonelik/hat no, fatura, arıza veya iptal bilgileri';
-      case 'cevap':
-        return 'Gelen yazının tarihi, sayısı, konusu ve cevap vermek istediğiniz hususlar';
-      case 'isci':
-        return 'İşyeri, görev, olay tarihleri, ücret/mobbing/çalışma sorunu ve varsa belgeler';
-      case 'hukuk':
-        return 'Karşı taraf, olay tarihi, uyuşmazlık türü ve elinizdeki belgeler';
-      case 'sendika':
-        return 'Sendika adı, üyelik/yönetim bilgisi, işlem veya gelen yazının ayrıntıları';
-      case 'dernek':
-        return 'Dernek adı, görev/üyelik bilgisi ve yapılacak işlemin ayrıntıları';
-      default:
-        return 'Varsa tarih, sayı, belge, tanık veya diğer önemli bilgiler';
-    }
-  }
-
-  String merci() {
-    switch (widget.islem.tur) {
-      case 'trafik':
-        return 'İlgili başvuru mercii';
-      case 'gsm':
-        return kurum.text.trim().isEmpty
-            ? 'İLGİLİ GSM / İNTERNET HİZMET SAĞLAYICISINA'
-            : kurum.text.trim().toUpperCase();
-      case 'isci':
-        return kurum.text.trim().isEmpty
-            ? 'İLGİLİ MAKAMA'
-            : kurum.text.trim().toUpperCase();
-      default:
-        return kurum.text.trim().isEmpty
-            ? 'İLGİLİ MAKAMA'
-            : kurum.text.trim().toUpperCase();
-    }
-  }
-
-  String konu() {
-    switch (widget.islem.tur) {
-      case 'trafik':
-        return 'İdari yaptırım / trafik cezasına itiraz hakkında';
-      case 'kaza':
-        return 'Trafik kazasına ilişkin olay beyanı';
-      case 'savunma':
-        return 'Savunmalarımın sunulması hakkında';
-      case 'sikayet':
-        return 'Şikâyet ve gerekli işlemlerin yapılması talebi';
-      case 'isci':
-        return 'Çalışma koşullarına ilişkin başvuru';
-      case 'gsm':
-        return 'Hizmet / abonelik uyuşmazlığının giderilmesi talebi';
-      case 'hukuk':
-        return 'Hukuki uyuşmazlığa ilişkin başvuru';
-      case 'cevap':
-        return 'Tarafıma gönderilen yazıya cevabım';
-      case 'sendika':
-        return 'Sendikal işleme ilişkin başvuru';
-      case 'dernek':
-        return 'Dernek işlemine ilişkin başvuru';
-      default:
-        return 'Başvuru ve talep hakkında';
-    }
-  }
-
-  String aciklamaMetni() {
-    final o = olay.text.trim();
-    final d = detay.text.trim();
-
-    switch (widget.islem.tur) {
-      case 'savunma':
-        return 'Tarafımdan savunma istenmesine konu olayla ilgili olarak; '
-            '$o\n\n'
-            'Olayın gerçekleşme biçimi ve mevcut koşullar birlikte '
-            'değerlendirildiğinde, açıklamalarımın bir bütün olarak dikkate '
-            'alınmasını talep ederim.'
-            '${d.isEmpty ? '' : '\n\nKonuya ilişkin ek bilgiler: $d'}';
-
-      case 'sikayet':
-        return 'Başvuruma konu olay ve uygulamalar özetle şöyledir:\n\n'
-            '$o\n\n'
-            'Belirttiğim hususların tarafsız biçimde incelenerek iddiaların '
-            've mevcut uygulamaların araştırılmasını talep etmekteyim.'
-            '${d.isEmpty ? '' : '\n\nBaşvuruyu destekleyen diğer bilgiler: $d'}';
-
-      case 'isci':
-        return 'Çalışma ilişkim kapsamında yaşadığım sorun aşağıda '
-            'açıklanmıştır:\n\n$o\n\n'
-            'Çalışma koşullarım, işyeri uygulamaları ve tarafıma yönelik '
-            'işlemlerin ilgili mevzuat ve işyeri düzenlemeleri kapsamında '
-            'incelenmesini talep etmekteyim.'
-            '${d.isEmpty ? '' : '\n\nDiğer bilgiler ve belgeler: $d'}';
-
-      case 'gsm':
-        return 'Abonelik/hizmet ilişkim kapsamında yaşadığım sorun şöyledir:\n\n'
-            '$o\n\n'
-            'Belirtilen hizmet sorununun ve varsa hatalı ücretlendirme, '
-            'fatura, taahhüt, fesih veya bağlantı işlemlerinin incelenerek '
-            'mağduriyetimin giderilmesini talep ederim.'
-            '${d.isEmpty ? '' : '\n\nAboneliğe ilişkin diğer bilgiler: $d'}';
-
-      case 'trafik':
-        return 'Tarafıma uygulanan idari yaptırıma ilişkin olay ve itiraz '
-            'nedenlerim şöyledir:\n\n$o\n\n'
-            'İşlemin dayanağı, düzenlenme ve tebliğ koşulları ile sunduğum '
-            'açıklama ve belgelerin birlikte değerlendirilmesini talep ederim.'
-            '${d.isEmpty ? '' : '\n\nCeza ve tebliğe ilişkin bilgiler: $d'}';
-
-      case 'kaza':
-        return 'Kaza olayına ilişkin bilgim ve beyanım şöyledir:\n\n$o'
-            '${d.isEmpty ? '' : '\n\nKaza, araç, hasar ve diğer bilgiler: $d'}'
-            '\n\nİşbu beyan, olayın gerçekleşme biçimine ilişkin bildiğim '
-            'hususların kayıt altına alınması amacıyla düzenlenmiştir.';
-
-      case 'cevap':
-        return 'Tarafıma gönderilen resmî yazıda belirtilen hususlara ilişkin '
-            'açıklamalarım aşağıdadır:\n\n$o'
-            '${d.isEmpty ? '' : '\n\nİlgili yazı ve diğer bilgiler: $d'}'
-            '\n\nYukarıdaki açıklamalarımın ilgili yazı kapsamında '
-            'değerlendirilmesini arz ederim.';
-
-      case 'hukuk':
-        return 'Başvuruma konu uyuşmazlık ve olaylar özetle şöyledir:\n\n$o'
-            '${d.isEmpty ? '' : '\n\nUyuşmazlığa ilişkin diğer bilgiler ve belgeler: $d'}'
-            '\n\nBelirttiğim olaylar ve mevcut belgeler çerçevesinde '
-            'haklarımın korunması amacıyla gerekli değerlendirmenin '
-            'yapılmasını talep ederim.';
-
-      case 'sendika':
-        return 'Sendikal işleme konu durum şöyledir:\n\n$o'
-            '${d.isEmpty ? '' : '\n\nİşleme ilişkin diğer bilgiler: $d'}'
-            '\n\nBelirtilen hususların sendika mevzuatı, tüzük ve ilgili '
-            'düzenlemeler kapsamında değerlendirilerek gerekli işlemin '
-            'yapılmasını talep ederim.';
-
-      case 'dernek':
-        return 'Dernek iş ve işlemlerine konu durum şöyledir:\n\n$o'
-            '${d.isEmpty ? '' : '\n\nİşleme ilişkin diğer bilgiler: $d'}'
-            '\n\nBelirtilen hususların dernek tüzüğü ve ilgili düzenlemeler '
-            'çerçevesinde değerlendirilmesini talep ederim.';
-
-      default:
-        return 'Aşağıda açıkladığım husus hakkında başvuruda bulunma gereği '
-            'doğmuştur:\n\n$o'
-            '${d.isEmpty ? '' : '\n\nKonuya ilişkin diğer bilgiler: $d'}'
-            '\n\nBelirttiğim hususların incelenerek gerekli işlemlerin '
-            'yapılmasını talep ederim.';
-    }
-  }
-
-  String sonuc() {
-    switch (widget.islem.tur) {
-      case 'savunma':
-        return 'Yukarıda arz ettiğim açıklamalarımın savunmam kapsamında '
-            'değerlendirilmesini ve hakkımda yapılacak işlemde tüm bilgi ve '
-            'belgelerin birlikte dikkate alınmasını arz ederim.';
-      case 'trafik':
-        return 'Yukarıda açıkladığım nedenler ve sunulan belgeler kapsamında '
-            'itirazımın incelenerek hukuka aykırı olduğu değerlendirilecek '
-            'işlemin kaldırılmasına karar verilmesini saygılarımla arz ve talep ederim.';
-      case 'kaza':
-        return 'Yukarıdaki bilgilerin olay beyanım olarak dikkate alınmasını '
-            've gerektiğinde ilgili kayıt ve belgelerle birlikte '
-            'değerlendirilmesini arz ederim.';
-      case 'sikayet':
-        return 'Yukarıda açıkladığım hususların araştırılmasını, gerekli '
-            'incelemenin yapılmasını ve sonucundan tarafıma bilgi verilmesini '
-            'saygılarımla arz ederim.';
-      case 'gsm':
-        return 'Sorunun incelenerek hizmetin gereği gibi sağlanmasını, varsa '
-            'hatalı işlemlerin düzeltilmesini ve başvurumun sonucu hakkında '
-            'tarafıma bilgi verilmesini arz ve talep ederim.';
-      default:
-        return 'Yukarıda açıkladığım hususların incelenerek gerekli işlemlerin '
-            'yapılmasını ve başvurumun sonucu hakkında tarafıma bilgi '
-            'verilmesini saygılarımla arz ederim.';
-    }
-  }
-
-  void hazirla() {
-    if (olay.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Önce yaşadığınız durumu anlatın.')),
-      );
-      return;
-    }
-
-    final now = DateTime.now();
-    final tarih =
-        '${now.day.toString().padLeft(2, '0')}.${now.month.toString().padLeft(2, '0')}.${now.year}';
-
-    final metin = '''
-${merci()}
-
-KONU: ${konu()}
-
-AÇIKLAMALAR:
-
-${aciklamaMetni()}
-
-SONUÇ VE TALEP:
-
-${sonuc()}
-
-Tarih: $tarih
-
-Ad Soyad: ${ad.text.trim()}
-${kimlik.text.trim().isEmpty ? '' : 'T.C. Kimlik No: ${kimlik.text.trim()}\n'}${adres.text.trim().isEmpty ? '' : 'Adres: ${adres.text.trim()}\n'}${telefon.text.trim().isEmpty ? '' : 'Telefon: ${telefon.text.trim()}\n'}
-İmza:
-''';
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => SonucSayfasi(
-          baslik: widget.islem.baslik,
-          metin: metin,
-          uyari: widget.islem.tur == 'hukuk' ||
-                  widget.islem.tur == 'trafik'
-              ? 'Görevli/yetkili merci, başvuru süresi ve güncel mevzuat işlem yapılmadan önce ayrıca kontrol edilmelidir.'
-              : null,
-        ),
-      ),
-    );
-  }
+  String v(String key) => ctrl(key).text.trim();
 
   Widget alan(
-    TextEditingController c,
+    String key,
     String label, {
     int satir = 1,
+    TextInputType? keyboard,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: TextField(
-        controller: c,
+        controller: ctrl(key),
         maxLines: satir,
-        decoration: InputDecoration(labelText: label),
+        keyboardType: keyboard,
+        decoration: InputDecoration(
+          labelText: label,
+          alignLabelWithHint: satir > 1,
+        ),
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.islem.baslik)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Text(
-            'Durumu kendi cümlelerinizle anlatın',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 6),
-          const Text(
-            'Uzun ve resmî yazmanıza gerek yok. Ne olduğunu açıkça anlatmanız yeterli.',
-          ),
-          const SizedBox(height: 18),
+  List<Widget> ortakKisi() => [
+        alan('ad', 'Ad Soyad'),
+        alan('tc', 'T.C. Kimlik No (gerekiyorsa)'),
+        alan('adres', 'Adres', satir: 2),
+        alan('telefon', 'Telefon'),
+      ];
+
+  List<Widget> formaGoreAlanlar() {
+    switch (widget.belge.kategori) {
+      case 'savunma':
+        return [
+          ...ortakKisi(),
+          alan('kurum', 'Savunmanın sunulacağı kurum / birim'),
+          alan('istek', 'Savunma neden istendi?'),
           alan(
-            olay,
-            widget.islem.tur == 'cevap'
-                ? 'Gelen yazı ne diyor, siz ne cevap vermek istiyorsunuz?'
-                : 'Ne oldu? Sorununuzu anlatın',
-            satir: 7,
+            'olay',
+            'Olayı kendi cümlelerinizle anlatın',
+            satir: 5,
           ),
-          alan(detay, yardimciAlan(), satir: 4),
-          const Divider(height: 30),
-          Text(
-            'Başvuru bilgileri',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+          alan(
+            'neden',
+            'Sizin kusurunuz olmadığını düşündüğünüz nedenler',
+            satir: 4,
           ),
-          const SizedBox(height: 12),
-          alan(kurum, 'Başvurulacak kurum / kuruluş'),
-          alan(ad, 'Ad Soyad'),
-          alan(kimlik, 'T.C. / Kimlik No (gerekiyorsa)'),
-          alan(adres, 'Adres', satir: 2),
-          alan(telefon, 'Telefon'),
-          const SizedBox(height: 8),
-          FilledButton.icon(
-            onPressed: hazirla,
-            icon: const Icon(Icons.auto_awesome),
-            label: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 14),
-              child: Text('Dilekçeyi Hazırla'),
-            ),
+          alan(
+            'delil',
+            'Varsa belge, mesaj, kamera, tanık veya diğer deliller',
+            satir: 3,
           ),
-        ],
-      ),
-    );
-  }
-}
+        ];
 
-class KararFormu extends StatefulWidget {
-  const KararFormu({super.key});
+      case 'sendikakarar':
+      case 'dernekkarar':
+        return [
+          alan('kurulus', 'Sendika / dernek adı'),
+          alan('tarih', 'Toplantı / karar tarihi'),
+          alan('kararno', 'Karar No'),
+          alan('katilan', 'Toplantıya katılan yönetim kurulu üyeleri', satir: 3),
+          alan('gundem', 'Gündem maddesi', satir: 2),
+          alan(
+            'gorusme',
+            'Ne görüşüldü? Günlük dille anlatabilirsiniz',
+            satir: 4,
+          ),
+          alan(
+            'karar',
+            'Alınan karar nedir?',
+            satir: 4,
+          ),
+          alan('oy', 'Oy birliği / oy çokluğu'),
+        ];
 
-  @override
-  State<KararFormu> createState() => _KararFormuState();
-}
+      case 'sendikatuzuk':
+      case 'dernektuzuk':
+        return [
+          alan('kurulus', 'Kuruluşun tam adı'),
+          alan('merkez', 'Merkezi'),
+          alan('amac', 'Kuruluş amacı', satir: 4),
+          alan('faaliyet', 'Faaliyet konuları', satir: 4),
+          alan('uyelik', 'Üyelik şartları', satir: 3),
+          alan('organlar', 'Organlar / yönetim yapısı', satir: 3),
+        ];
 
-class _KararFormuState extends State<KararFormu> {
-  final kurum = TextEditingController();
-  final tarih = TextEditingController();
-  final no = TextEditingController();
-  final katilanlar = TextEditingController();
-  final gundem = TextEditingController();
-  final aciklama = TextEditingController();
-  final karar = TextEditingController();
+      case 'kaza':
+        return [
+          ...ortakKisi(),
+          alan('tarih', 'Kaza tarihi ve saati'),
+          alan('yer', 'Kaza yeri'),
+          alan('arac1', 'Sizin araç / plaka bilgileriniz'),
+          alan('arac2', 'Diğer araç / plaka bilgileri'),
+          alan(
+            'olay',
+            'Kazanın nasıl olduğunu ayrıntılı anlatın',
+            satir: 5,
+          ),
+          alan('hasar', 'Araçlardaki hasarlar', satir: 3),
+          alan('tanik', 'Varsa tanık bilgileri', satir: 2),
+        ];
 
-  Widget alan(TextEditingController c, String l, {int satir = 1}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: TextField(
-        controller: c,
-        maxLines: satir,
-        decoration: InputDecoration(labelText: l),
-      ),
-    );
-  }
+      case 'trafik':
+        return [
+          ...ortakKisi(),
+          alan('kurum', 'Cezayı düzenleyen kurum'),
+          alan('tutanak', 'Tutanak / seri sıra numarası'),
+          alan('teblig', 'Tebliğ / öğrenme tarihi'),
+          alan('ceza', 'Ceza türü ve tutarı'),
+          alan('yer', 'Ceza yeri'),
+          alan(
+            'olay',
+            'Cezanın neden hatalı olduğunu düşünüyorsunuz?',
+            satir: 5,
+          ),
+          alan('delil', 'Delilleriniz', satir: 3),
+        ];
 
-  void hazirla() {
-    if (kurum.text.trim().isEmpty || karar.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Kurum adı ve alınan kararı yazın.')),
-      );
-      return;
+      case 'gsm':
+        return [
+          ...ortakKisi(),
+          alan('operator', 'Operatör / internet sağlayıcısı'),
+          alan('abone', 'Abone / müşteri / telefon numarası'),
+          alan(
+            'sorun',
+            'Sorun nedir? (fatura, internet, iptal, cayma bedeli vb.)',
+            satir: 4,
+          ),
+          alan('basvuru', 'Daha önce şirkete yaptığınız başvuru', satir: 3),
+          alan('talep', 'Şirketten ne yapılmasını istiyorsunuz?', satir: 3),
+        ];
+
+      case 'cevap':
+        return [
+          ...ortakKisi(),
+          alan('kurum', 'Cevap verilecek kurum'),
+          alan('gelenkurum', 'Yazıyı gönderen kurum / birim'),
+          alan('tarih', 'Gelen yazının tarihi'),
+          alan('sayi', 'Gelen yazının sayısı'),
+          alan('konu', 'Gelen yazının konusu'),
+          alan(
+            'icerik',
+            'Yazıda sizden ne isteniyor?',
+            satir: 4,
+          ),
+          alan(
+            'cevap',
+            'Vermek istediğiniz cevabı kendi cümlelerinizle anlatın',
+            satir: 5,
+          ),
+        ];
+
+      case 'dernekuyelik':
+        return [
+          ...ortakKisi(),
+          alan('dernek', 'Dernek adı'),
+          alan('islem', 'İşlem türü: üyelik / istifa / yedek üye çağrısı vb.'),
+          alan('olay', 'İşlemin açıklaması', satir: 4),
+          alan('talep', 'Talep edilen işlem', satir: 3),
+        ];
+
+      default:
+        return [
+          ...ortakKisi(),
+          alan('kurum', 'Başvurulacak kurum / kuruluş'),
+          alan('konu', 'Konu'),
+          alan(
+            'olay',
+            'Yaşanan olayı / sorunu kendi cümlelerinizle anlatın',
+            satir: 5,
+          ),
+          alan(
+            'neden',
+            'Önemli ayrıntılar / gerekçeler',
+            satir: 4,
+          ),
+          alan('delil', 'Varsa belge / delil / ekler', satir: 3),
+          alan(
+            'talep',
+            'Sonuçta ne yapılmasını istiyorsunuz?',
+            satir: 4,
+          ),
+        ];
     }
+  }
 
-    final metin = '''
-${kurum.text.trim().toUpperCase()}
+  String tarihBugun() {
+    final d = DateTime.now();
+    return '${d.day.toString().padLeft(2, '0')}.'
+        '${d.month.toString().padLeft(2, '0')}.${d.year}';
+  }
+
+  String kimlikBolumu() {
+    final b = StringBuffer();
+    if (v('ad').isNotEmpty) b.writeln('Ad Soyad: ${v('ad')}');
+    if (v('tc').isNotEmpty) b.writeln('T.C. Kimlik No: ${v('tc')}');
+    if (v('adres').isNotEmpty) b.writeln('Adres: ${v('adres')}');
+    if (v('telefon').isNotEmpty) b.writeln('Telefon: ${v('telefon')}');
+    return b.toString();
+  }
+
+  String ekler() {
+    if (v('delil').isEmpty) return '';
+    return '\nEKLER / DELİLLER:\n${v('delil')}\n';
+  }
+
+  String resmiAciklama(String olay) {
+    if (olay.isEmpty) return '';
+    var x = olay.trim();
+    if (!x.endsWith('.') && !x.endsWith('!') && !x.endsWith('?')) {
+      x = '$x.';
+    }
+    return x;
+  }
+
+  String dilekce() {
+    final kurum =
+        v('kurum').isEmpty ? 'İLGİLİ MAKAMA' : v('kurum').toUpperCase();
+
+    return '''
+$kurum
+
+KONU: ${v('konu').isEmpty ? 'Başvuru ve talebimin sunulması' : v('konu')}
+
+AÇIKLAMALAR:
+
+${resmiAciklama(v('olay'))}
+
+${v('neden').isEmpty ? '' : 'Başvuruma konu husus bakımından ayrıca belirtmek isterim ki; ${resmiAciklama(v('neden'))}'}
+
+Yukarıda açıkladığım hususların birlikte değerlendirilerek konu hakkında gerekli incelemenin yapılmasını talep etmekteyim.
+
+SONUÇ VE TALEP:
+
+${v('talep').isEmpty ? 'Yukarıda arz edilen hususların incelenerek gereğinin yapılmasını ve sonucundan tarafıma bilgi verilmesini saygılarımla arz ederim.' : '${resmiAciklama(v('talep'))} Bu kapsamda gerekli işlemlerin yapılarak sonucundan tarafıma bilgi verilmesini saygılarımla arz ederim.'}
+
+${ekler()}
+Tarih: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+''';
+  }
+
+  String savunma() {
+    final kurum =
+        v('kurum').isEmpty ? 'İLGİLİ MAKAMA' : v('kurum').toUpperCase();
+
+    return '''
+$kurum
+
+KONU: Savunmalarımın sunulması hakkındadır.
+
+SAVUNMA:
+
+Tarafımdan savunma istenmesine konu husus ${v('istek').isEmpty ? 'ile ilgili olarak açıklamalarımı sunma gereği doğmuştur' : 'özetle "${v('istek')}" şeklindedir'}.
+
+Olayın gerçekleşme sürecine ilişkin açıklamam şöyledir:
+
+${resmiAciklama(v('olay'))}
+
+${v('neden').isEmpty ? '' : 'Olayın meydana gelmesinde tarafıma kusur yüklenmemesi gerektiğini düşündüğüm hususlar şunlardır:\n\n${resmiAciklama(v('neden'))}'}
+
+${v('delil').isEmpty ? '' : 'Bu açıklamalarımın değerlendirilmesinde ${v('delil')} hususlarının da dikkate alınmasını talep ederim.'}
+
+Olayın oluş şekli, tarafıma yapılan bildirimler, mevcut çalışma koşulları ve yukarıda açıkladığım hususlar birlikte değerlendirildiğinde, konu hakkında karar verilirken olayın bütün yönleriyle incelenmesinin hakkaniyete uygun olacağı kanaatindeyim.
+
+SONUÇ VE TALEP:
+
+Yukarıda sunduğum savunmalarım ile mevcut bilgi ve belgelerin birlikte değerlendirilmesini, olayın gerçek oluş şeklinin dikkate alınmasını ve hakkımda yapılacak işlemde bu açıklamalarımın göz önünde bulundurulmasını saygılarımla arz ederim.
+
+Tarih: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+''';
+  }
+
+  String sikayet() {
+    final kurum =
+        v('kurum').isEmpty ? 'İLGİLİ MAKAMA' : v('kurum').toUpperCase();
+
+    return '''
+$kurum
+
+KONU: ${v('konu').isEmpty ? 'Şikâyet ve inceleme talebi' : v('konu')}
+
+AÇIKLAMALAR:
+
+Başvuruma konu olay ve uygulamalar aşağıda açıklanmıştır.
+
+${resmiAciklama(v('olay'))}
+
+${v('neden').isEmpty ? '' : 'Konuya ilişkin önemli gördüğüm diğer hususlar şunlardır:\n\n${resmiAciklama(v('neden'))}'}
+
+Belirttiğim hususların yalnızca tek bir olay üzerinden değil, olayın oluş şekli ve mevcut bilgi ve belgeler birlikte değerlendirilerek incelenmesini talep etmekteyim.
+
+SONUÇ VE TALEP:
+
+${v('talep').isEmpty ? 'Şikâyetime konu hususların araştırılmasını, gerekli inceleme ve işlemlerin yapılmasını ve sonucundan tarafıma bilgi verilmesini saygılarımla arz ederim.' : '${resmiAciklama(v('talep'))} Gerekli incelemenin yapılarak sonucundan tarafıma bilgi verilmesini saygılarımla arz ederim.'}
+
+${ekler()}
+Tarih: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+''';
+  }
+
+  String mobbing() {
+    final kurum =
+        v('kurum').isEmpty ? 'İLGİLİ MAKAMA' : v('kurum').toUpperCase();
+
+    return '''
+$kurum
+
+KONU: İşyerinde yaşandığı belirtilen davranış ve uygulamaların incelenmesi talebidir.
+
+AÇIKLAMALAR:
+
+Çalışma ortamında yaşadığım ve değerlendirilmesini istediğim olaylar aşağıda açıklanmıştır:
+
+${resmiAciklama(v('olay'))}
+
+${v('neden').isEmpty ? '' : 'Söz konusu uygulamaların çalışma düzeni ve şahsım üzerindeki etkileri bakımından önemli gördüğüm hususlar şöyledir:\n\n${resmiAciklama(v('neden'))}'}
+
+Belirttiğim olayların sürekliliği, gerçekleşme biçimi, çalışma ortamına etkileri ve varsa bilgi ve belgeler birlikte değerlendirilerek incelenmesini talep etmekteyim.
+
+SONUÇ VE TALEP:
+
+${v('talep').isEmpty ? 'Başvuruma konu olayların araştırılmasını, çalışma ortamında gerekli incelemenin yapılmasını, mevzuat kapsamında gerekli tedbir ve işlemlerin değerlendirilmesini ve sonucundan tarafıma bilgi verilmesini saygılarımla arz ederim.' : '${resmiAciklama(v('talep'))} Başvurumun incelenerek sonucundan tarafıma bilgi verilmesini saygılarımla arz ederim.'}
+
+${ekler()}
+Tarih: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+''';
+  }
+
+  String isci() {
+    final kurum =
+        v('kurum').isEmpty ? 'İLGİLİ MAKAMA' : v('kurum').toUpperCase();
+
+    return '''
+$kurum
+
+KONU: ${v('konu').isEmpty ? 'Çalışma ilişkisinden kaynaklanan başvuru ve taleplerim' : v('konu')}
+
+AÇIKLAMALAR:
+
+Çalışma ilişkim kapsamında yaşadığım uyuşmazlık / sorun aşağıdaki şekildedir:
+
+${resmiAciklama(v('olay'))}
+
+${v('neden').isEmpty ? '' : 'Konuya ilişkin ayrıca dikkate alınmasını istediğim hususlar:\n\n${resmiAciklama(v('neden'))}'}
+
+Varsa işyeri kayıtları, ücret bordroları, vardiya/nöbet kayıtları, yazışmalar ve diğer belgelerin de inceleme kapsamında değerlendirilmesini talep ederim.
+
+SONUÇ VE TALEP:
+
+${v('talep').isEmpty ? 'Çalışma ilişkisinden kaynaklanan başvurumun incelenmesini, hak ve alacaklarım yönünden gerekli işlemlerin yapılmasını ve sonucundan tarafıma bilgi verilmesini saygılarımla arz ederim.' : '${resmiAciklama(v('talep'))} Gereğinin yapılmasını saygılarımla arz ederim.'}
+
+${ekler()}
+Tarih: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+''';
+  }
+
+  String trafik() {
+    return '''
+GÖREVLİ VE YETKİLİ MERCİE
+
+KONU: Trafik idari yaptırımına ilişkin itiraz / başvuru talebidir.
+
+AÇIKLAMALAR:
+
+${v('kurum').isEmpty ? '' : 'İşlemi Düzenleyen Kurum: ${v('kurum')}'}
+${v('tutanak').isEmpty ? '' : 'Tutanak / Seri Sıra No: ${v('tutanak')}'}
+${v('teblig').isEmpty ? '' : 'Tebliğ / Öğrenme Tarihi: ${v('teblig')}'}
+${v('ceza').isEmpty ? '' : 'Ceza / Yaptırım: ${v('ceza')}'}
+${v('yer').isEmpty ? '' : 'Yer: ${v('yer')}'}
+
+İtirazıma konu işlemin hatalı olduğunu düşündüğüm nedenler şöyledir:
+
+${resmiAciklama(v('olay'))}
+
+${v('delil').isEmpty ? '' : 'İtirazımı desteklediğini düşündüğüm bilgi ve belgeler: ${v('delil')}.'}
+
+SONUÇ VE TALEP:
+
+Yukarıda açıkladığım hususlar ve sunulan belgeler kapsamında itiraza konu idari yaptırımın incelenmesini ve hukuki şartları oluşmuş ise kaldırılmasına / iptaline karar verilmesini saygılarımla arz ve talep ederim.
+
+Tarih: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+
+NOT: Başvuru mercii ve süre, yaptırımın türü ve tebliğ şekline göre değişebileceğinden resmî başvuru öncesinde güncel mevzuat ve tebligat bilgileri kontrol edilmelidir.
+''';
+  }
+
+  String kaza() {
+    return '''
+TRAFİK KAZASI OLAY BEYANI / TUTANAK TASLAĞI
+
+Olay Tarihi ve Saati: ${v('tarih')}
+Olay Yeri: ${v('yer')}
+
+ARAÇ VE TARAF BİLGİLERİ:
+
+1. Araç / Plaka:
+${v('arac1')}
+
+2. Araç / Plaka:
+${v('arac2')}
+
+OLAYIN OLUŞ ŞEKLİ:
+
+${resmiAciklama(v('olay'))}
+
+HASAR VE TESPİTLER:
+
+${v('hasar').isEmpty ? 'Tespit edilen hasarlar ayrıca belirtilmemiştir.' : resmiAciklama(v('hasar'))}
+
+${v('tanik').isEmpty ? '' : 'TANIK / DİĞER BİLGİLER:\n${v('tanik')}\n'}
+
+İşbu olay beyanı, kazanın oluş şekline ilişkin bilgilerin kayıt altına alınması amacıyla düzenlenmiştir.
+
+Düzenleme Tarihi: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+
+NOT: Bu taslak, mevzuat gereği zorunlu olan resmî kaza tespit işlemlerinin yerine geçtiği anlamına gelmez.
+''';
+  }
+
+  String gsm() {
+    final op =
+        v('operator').isEmpty ? 'İLGİLİ İŞLETMECİYE' : '${v('operator').toUpperCase()} GENEL MÜDÜRLÜĞÜNE';
+
+    return '''
+$op
+
+KONU: Abonelik / hizmet şikâyeti ve çözüm talebi
+
+${v('abone').isEmpty ? '' : 'Abone / Müşteri / Hat No: ${v('abone')}'}
+
+AÇIKLAMALAR:
+
+Tarafıma sunulan elektronik haberleşme / internet hizmeti kapsamında aşağıda açıkladığım sorun yaşanmaktadır:
+
+${resmiAciklama(v('sorun'))}
+
+${v('basvuru').isEmpty ? '' : 'Sorunun çözümü amacıyla daha önce işletmeciye yaptığım başvuruya ilişkin bilgiler şöyledir:\n\n${resmiAciklama(v('basvuru'))}'}
+
+Yaşanan sorunun abonelik kayıtları, faturalandırma bilgileri, teknik kayıtlar ve önceki başvurularım ile birlikte incelenmesini talep etmekteyim.
+
+SONUÇ VE TALEP:
+
+${v('talep').isEmpty ? 'Şikâyetime konu sorunun incelenmesini, gerekli düzeltmenin yapılmasını ve sonucundan tarafıma yazılı olarak bilgi verilmesini saygılarımla arz ederim.' : '${resmiAciklama(v('talep'))} Başvurumun sonuçlandırılarak tarafıma bilgi verilmesini arz ederim.'}
+
+Tarih: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+''';
+  }
+
+  String resmiCevap() {
+    final kurum =
+        v('kurum').isEmpty ? 'İLGİLİ MAKAMA' : v('kurum').toUpperCase();
+
+    return '''
+$kurum
+
+İLGİ: ${v('gelenkurum')} tarafından gönderilen ${v('tarih')} tarihli${v('sayi').isEmpty ? '' : ' ve ${v('sayi')} sayılı'} yazı.
+
+KONU: ${v('konu').isEmpty ? 'İlgi yazıya cevap' : v('konu')}
+
+İlgi yazıda ${v('icerik').isEmpty ? 'belirtilen hususlara' : v('icerik')} ilişkin olarak açıklamalarımız / açıklamalarım aşağıda sunulmuştur.
+
+${resmiAciklama(v('cevap'))}
+
+Yukarıda açıklanan hususların ilgi yazı kapsamında değerlendirilmesi hususunda bilgilerinize arz ederim.
+
+Tarih: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+''';
+  }
+
+  String yonetimKarari(bool sendika) {
+    final tur = sendika ? 'SENDİKA' : 'DERNEK';
+
+    return '''
+${v('kurulus').isEmpty ? tur : v('kurulus').toUpperCase()}
 
 YÖNETİM KURULU KARARI
 
-Karar Tarihi: ${tarih.text.trim()}
-Karar No: ${no.text.trim()}
+Karar Tarihi: ${v('tarih')}
+Karar No: ${v('kararno')}
 
 Toplantıya Katılanlar:
-${katilanlar.text.trim()}
+${v('katilan')}
 
 GÜNDEM:
-${gundem.text.trim()}
+${v('gundem')}
 
 GÖRÜŞME:
-${aciklama.text.trim()}
+
+Yönetim Kurulu, yukarıda belirtilen gündem maddesini görüşmek üzere toplanmıştır.
+
+${resmiAciklama(v('gorusme'))}
+
+Yapılan görüşme ve değerlendirmeler sonucunda aşağıdaki karar alınmıştır.
 
 KARAR:
-${karar.text.trim()}
 
-Yukarıda belirtilen husus yönetim kurulunca görüşülmüş ve karar altına alınmıştır.
+${resmiAciklama(v('karar'))}
 
-İMZALAR
+Yukarıda belirtilen kararın uygulanması ve gerekli iş ve işlemlerin yürütülmesi hususunda ${v('oy').isEmpty ? 'karar verilmiştir' : '${v('oy')} ile karar verilmiştir'}.
 
-Başkan: ____________________
+Başkan
+Ad Soyad / İmza
 
-Başkan Yardımcısı: ____________________
+Üye
+Ad Soyad / İmza
 
-Sekreter: ____________________
-
-Üye: ____________________
-
-Üye: ____________________
+Üye
+Ad Soyad / İmza
 ''';
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) =>
-            SonucSayfasi(baslik: 'Yönetim Kurulu Kararı', metin: metin),
-      ),
-    );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Yönetim Kurulu Kararı')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          const Text(
-            'Karar Bilgileri',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          alan(kurum, 'Sendika / Dernek / Kuruluş adı'),
-          alan(tarih, 'Karar / toplantı tarihi'),
-          alan(no, 'Karar numarası'),
-          alan(katilanlar, 'Toplantıya katılan üyeler', satir: 3),
-          alan(gundem, 'Gündem maddesi', satir: 3),
-          alan(
-            aciklama,
-            'Konu nasıl görüşüldü? Kısaca anlatın',
-            satir: 5,
-          ),
-          alan(
-            karar,
-            'Ne karar alındı? Kendi cümlelerinizle yazın',
-            satir: 5,
-          ),
-          FilledButton.icon(
-            onPressed: hazirla,
-            icon: const Icon(Icons.fact_check),
-            label: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 14),
-              child: Text('Kararı Hazırla'),
-            ),
-          ),
-        ],
-      ),
-    );
+  String tuzuk(bool sendika) {
+    final tur = sendika ? 'SENDİKA' : 'DERNEK';
+
+    return '''
+${v('kurulus').isEmpty ? tur : v('kurulus').toUpperCase()} TÜZÜĞÜ TASLAĞI
+
+MADDE 1 – ADI VE MERKEZİ
+
+Kuruluşun adı: ${v('kurulus')}
+Merkezi: ${v('merkez')}
+
+MADDE 2 – AMAÇ
+
+${resmiAciklama(v('amac'))}
+
+MADDE 3 – FAALİYET KONULARI
+
+${resmiAciklama(v('faaliyet'))}
+
+MADDE 4 – ÜYELİK
+
+${resmiAciklama(v('uyelik'))}
+
+MADDE 5 – ÜYELİĞİN SONA ERMESİ
+
+Üyeliğin sona ermesi; istifa, üyelik şartlarının kaybedilmesi ve ilgili mevzuat ile bu tüzükte öngörülen diğer hâllerde gerçekleşir. Ayrıntılı usul ve esaslar kuruluşun niteliğine ve güncel mevzuata göre düzenlenir.
+
+MADDE 6 – ORGANLAR
+
+${v('organlar').isEmpty ? 'Kuruluşun zorunlu ve ihtiyari organları ilgili mevzuat çerçevesinde oluşturulur.' : resmiAciklama(v('organlar'))}
+
+MADDE 7 – GENEL KURUL
+
+Genel kurulun oluşumu, toplantı zamanı, çağrı usulü, toplantı ve karar yeter sayıları yürürlükteki mevzuat ve bu tüzük hükümlerine göre belirlenir.
+
+MADDE 8 – YÖNETİM KURULU
+
+Yönetim kurulu, kuruluşun idari ve mali işlerini yürütür; genel kurul kararlarını uygular ve kuruluşu ilgili mevzuat ile tüzük hükümleri çerçevesinde temsil eder.
+
+MADDE 9 – DENETİM
+
+Kuruluşun faaliyetleri ve mali işlemleri ilgili mevzuat ve tüzük hükümleri çerçevesinde denetlenir.
+
+MADDE 10 – MALİ HÜKÜMLER
+
+Gelir, gider, bütçe, aidat ve mali işlemler ilgili mevzuat ile genel kurul kararları doğrultusunda yürütülür.
+
+MADDE 11 – TÜZÜK DEĞİŞİKLİĞİ
+
+Tüzük değişiklikleri yetkili organ tarafından, yürürlükteki mevzuatta ve bu tüzükte belirtilen usule göre gerçekleştirilir.
+
+MADDE 12 – FESİH / SONA ERME
+
+Kuruluşun sona ermesi ve malvarlığının tasfiyesi yürürlükteki mevzuat ve genel kurul kararları doğrultusunda gerçekleştirilir.
+
+GEÇİCİ VE SON HÜKÜMLER
+
+Bu tüzükte hüküm bulunmayan hâllerde yürürlükteki ilgili mevzuat hükümleri uygulanır.
+
+NOT: Bu metin tüzük taslağıdır. Kuruluş, değişiklik ve resmî başvuru öncesinde güncel mevzuata göre kontrol edilmelidir.
+''';
   }
-}
 
-class TuzukFormu extends StatefulWidget {
-  final String tur;
-  const TuzukFormu({super.key, required this.tur});
+  String dernekUyelik() {
+    return '''
+${v('dernek').isEmpty ? 'İLGİLİ DERNEK BAŞKANLIĞINA' : '${v('dernek').toUpperCase()} BAŞKANLIĞINA'}
 
-  @override
-  State<TuzukFormu> createState() => _TuzukFormuState();
-}
+KONU: ${v('islem').isEmpty ? 'Dernek işlemi hakkında başvuru' : v('islem')}
 
-class _TuzukFormuState extends State<TuzukFormu> {
-  final ad = TextEditingController();
-  final merkez = TextEditingController();
-  final amac = TextEditingController();
-  final faaliyet = TextEditingController();
-  final uyelik = TextEditingController();
-  final organlar = TextEditingController();
+AÇIKLAMALAR:
 
-  Widget alan(TextEditingController c, String l, {int satir = 1}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: TextField(
-        controller: c,
-        maxLines: satir,
-        decoration: InputDecoration(labelText: l),
-      ),
-    );
+${resmiAciklama(v('olay'))}
+
+SONUÇ VE TALEP:
+
+${v('talep').isEmpty ? 'Yukarıda açıkladığım hususlar doğrultusunda gerekli işlemin yapılmasını saygılarımla arz ederim.' : '${resmiAciklama(v('talep'))} Gereğinin yapılmasını saygılarımla arz ederim.'}
+
+Tarih: ${tarihBugun()}
+
+${kimlikBolumu()}
+İmza:
+''';
+  }
+
+  String belgeOlustur() {
+    switch (widget.belge.kategori) {
+      case 'savunma':
+        return savunma();
+      case 'sikayet':
+        return sikayet();
+      case 'mobbing':
+        return mobbing();
+      case 'isci':
+        return isci();
+      case 'trafik':
+        return trafik();
+      case 'kaza':
+        return kaza();
+      case 'gsm':
+        return gsm();
+      case 'cevap':
+        return resmiCevap();
+      case 'sendikakarar':
+        return yonetimKarari(true);
+      case 'dernekkarar':
+        return yonetimKarari(false);
+      case 'sendikatuzuk':
+        return tuzuk(true);
+      case 'dernektuzuk':
+        return tuzuk(false);
+      case 'dernekuyelik':
+        return dernekUyelik();
+      case 'sendikayazi':
+      case 'hukuk':
+      case 'tuketici':
+      case 'kamu':
+      case 'dilekce':
+      default:
+        return dilekce();
+    }
   }
 
   void hazirla() {
-    if (ad.text.trim().isEmpty || amac.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Kuruluş adı ve kuruluş amacını yazın.'),
-        ),
-      );
-      return;
-    }
-
-    final sendika = widget.tur == 'sendikaTuzuk';
-    final turAdi = sendika ? 'SENDİKA' : 'DERNEK';
-
-    final metin = '''
-${ad.text.trim().toUpperCase()} $turAdi TÜZÜĞÜ
-
-MADDE 1 - ADI VE MERKEZİ
-Kuruluşun adı "${ad.text.trim()}"dır.
-Merkezi: ${merkez.text.trim()}.
-
-MADDE 2 - AMAÇ
-${amac.text.trim()}
-
-MADDE 3 - FAALİYETLER
-${faaliyet.text.trim()}
-
-MADDE 4 - ÜYELİK
-${uyelik.text.trim().isEmpty ? 'Üyeliğe kabul, üyelikten ayrılma ve üyeliğin sona ermesine ilişkin işlemler ilgili mevzuat ve bu tüzük hükümleri çerçevesinde yürütülür.' : uyelik.text.trim()}
-
-MADDE 5 - ORGANLAR
-${organlar.text.trim().isEmpty ? 'Kuruluşun zorunlu organları genel kurul, yönetim kurulu ve denetim kuruludur. Gerekli diğer organlar tüzük hükümleri doğrultusunda oluşturulabilir.' : organlar.text.trim()}
-
-MADDE 6 - GENEL KURUL
-Genel kurulun oluşumu, toplantı zamanı, çağrı usulü, toplantı ve karar yeter sayıları ilgili mevzuat ile bu tüzük hükümlerine göre belirlenir.
-
-MADDE 7 - YÖNETİM KURULU
-Yönetim kurulu, kuruluşun yönetim ve temsil organıdır. Görev ve yetkilerini mevzuat, genel kurul kararları ve bu tüzük hükümleri çerçevesinde kullanır.
-
-MADDE 8 - DENETİM
-Kuruluşun faaliyet ve hesapları, ilgili mevzuat ve tüzük hükümleri çerçevesinde denetlenir.
-
-MADDE 9 - GELİRLER VE MALİ HÜKÜMLER
-Gelirlerin elde edilmesi, giderlerin yapılması, kayıt ve belgelerin tutulması ilgili mevzuata uygun olarak yürütülür.
-
-MADDE 10 - TÜZÜK DEĞİŞİKLİĞİ
-Tüzük değişiklikleri yetkili organ tarafından, ilgili mevzuatta ve bu tüzükte belirtilen usul ve çoğunluklara uygun olarak yapılır.
-
-MADDE 11 - FESİH VE TASFİYE
-Kuruluşun sona ermesi, feshi ve malvarlığının tasfiyesi ilgili mevzuat ve genel kurul kararları doğrultusunda gerçekleştirilir.
-
-MADDE 12 - HÜKÜM BULUNMAYAN HALLER
-Bu tüzükte hüküm bulunmayan konularda yürürlükteki ilgili mevzuat hükümleri uygulanır.
-''';
+    final metin = belgeOlustur();
 
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => SonucSayfasi(
-          baslik: '$turAdi Tüzüğü Taslağı',
+          baslik: widget.belge.baslik,
           metin: metin,
-          uyari:
-              'Tüzük, resmî kuruluş veya değişiklik işleminden önce kuruluş türüne ilişkin güncel mevzuata göre kontrol edilmelidir.',
         ),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context) {
-    final sendika = widget.tur == 'sendikaTuzuk';
+  void dispose() {
+    for (final x in c.values) {
+      x.dispose();
+    }
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(sendika ? 'Sendika Tüzüğü' : 'Dernek Tüzüğü'),
+        title: Text(
+          widget.belge.baslik,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(
-            '${sendika ? 'Sendika' : 'Dernek'} bilgilerini anlatın',
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                'Bilgileri mümkün olduğunca açık yazın. '
+                'Olayı günlük dille anlatabilirsiniz; belge uygun resmî yapıda hazırlanacaktır.',
+                style: const TextStyle(fontSize: 16),
+              ),
             ),
           ),
-          const SizedBox(height: 16),
-          alan(ad, '${sendika ? 'Sendika' : 'Dernek'} adı'),
-          alan(merkez, 'Merkezi'),
-          alan(amac, 'Kuruluş amacı nedir?', satir: 5),
-          alan(faaliyet, 'Hangi faaliyetleri yapacak?', satir: 5),
-          alan(uyelik, 'Üyelik şartlarını anlatın', satir: 4),
-          alan(organlar, 'Organlar ve yönetim yapısı', satir: 4),
+          const SizedBox(height: 12),
+          ...formaGoreAlanlar(),
+          const SizedBox(height: 4),
           FilledButton.icon(
             onPressed: hazirla,
-            icon: const Icon(Icons.menu_book),
+            icon: const Icon(Icons.auto_awesome),
             label: const Padding(
-              padding: EdgeInsets.symmetric(vertical: 14),
-              child: Text('Tüzük Taslağını Hazırla'),
+              padding: EdgeInsets.symmetric(vertical: 15),
+              child: Text(
+                'Belgeyi Hazırla',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
+          const SizedBox(height: 30),
         ],
       ),
     );
@@ -742,52 +888,46 @@ Bu tüzükte hüküm bulunmayan konularda yürürlükteki ilgili mevzuat hüküm
 class SonucSayfasi extends StatelessWidget {
   final String baslik;
   final String metin;
-  final String? uyari;
 
   const SonucSayfasi({
     super.key,
     required this.baslik,
     required this.metin,
-    this.uyari,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(baslik)),
+      appBar: AppBar(
+        title: Text(
+          baslik,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          if (uyari != null)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.info_outline),
-                    const SizedBox(width: 10),
-                    Expanded(child: Text(uyari!)),
-                  ],
-                ),
-              ),
-            ),
-          const SizedBox(height: 8),
           const Text(
             'Hazırlanan Belge',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           Container(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: Colors.black38),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(14),
             ),
             child: SelectableText(
               metin,
-              style: const TextStyle(fontSize: 16, height: 1.55),
+              style: const TextStyle(
+                fontSize: 16,
+                height: 1.55,
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -796,7 +936,9 @@ class SonucSayfasi extends StatelessWidget {
               await Clipboard.setData(ClipboardData(text: metin));
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Belge panoya kopyalandı.')),
+                  const SnackBar(
+                    content: Text('Belge metni panoya kopyalandı.'),
+                  ),
                 );
               }
             },
@@ -812,7 +954,7 @@ class SonucSayfasi extends StatelessWidget {
             icon: const Icon(Icons.edit_outlined),
             label: const Text('Bilgileri Düzenle'),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 30),
         ],
       ),
     );
