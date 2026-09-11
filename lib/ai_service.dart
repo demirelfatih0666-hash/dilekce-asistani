@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 
 class AiService {
   // Güvenli sunucu bağlantısını kurduğumuzda gerçek adresi buraya ekleyeceğiz.
-  static const String apiUrl = '';
+  static const String apiUrl = 'https://weathered-sound-9c7b.demirel-fatih0666.workers.dev/';
 
   static Future<String> belgeOlustur({
     required String belgeTuru,
