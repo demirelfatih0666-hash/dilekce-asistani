@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'ai_service.dart';
 
 void main() {
   runApp(const DilekceAsistaniApp());
@@ -27,47 +29,47 @@ class AnaSayfa extends StatelessWidget {
   static const List<BelgeTuru> belgeler = [
     BelgeTuru(
       'Dilekçe Hazırla',
-      'Kurumlara ve kuruluşlara profesyonel dilekçe oluştur.',
+      'Kurumlara ve kuruluşlara dilekçe taslağı oluştur.',
       Icons.description_outlined,
     ),
     BelgeTuru(
       'Savunma Hazırla',
-      'Olayı anlat, profesyonel savunma metni oluştur.',
+      'Olayı anlat, yazılı savunma taslağı oluştur.',
       Icons.shield_outlined,
     ),
     BelgeTuru(
       'Mahkeme ve Hukuk',
-      'Hukuki konuyu anlat, başvuru yolu ve dilekçe taslağı oluştur.',
+      'Hukuki konuyu anlat, başvuru ve dilekçe taslağı hazırla.',
       Icons.gavel_outlined,
     ),
     BelgeTuru(
       'Trafik ve Kaza',
-      'Kaza tutanağı, olay beyanı ve trafik itirazı hazırla.',
+      'Kaza beyanı, tutanak taslağı ve trafik itirazı hazırla.',
       Icons.car_crash_outlined,
     ),
     BelgeTuru(
       'İşçi ve Çalışma Hayatı',
-      'İşveren, Bakanlık ve ilgili kurumlara başvuru hazırla.',
+      'İşverene ve ilgili kurumlara başvuru hazırla.',
       Icons.work_outline,
     ),
     BelgeTuru(
       'Sendika İşlemleri',
-      'Resmî yazı, karar, tutanak, cevap ve tüzük taslağı hazırla.',
+      'Resmî yazı, karar, tutanak ve tüzük taslağı hazırla.',
       Icons.groups_outlined,
     ),
     BelgeTuru(
       'Dernek İşlemleri',
-      'Karar, tutanak, istifa, atama ve tüzük taslağı hazırla.',
+      'Karar, tutanak, istifa ve atama yazısı taslağı hazırla.',
       Icons.account_balance_outlined,
     ),
     BelgeTuru(
       'Telefon ve İnternet',
-      'Operatör, internet sağlayıcı ve tüketici başvurusu hazırla.',
+      'Operatör ve internet sağlayıcısına başvuru hazırla.',
       Icons.wifi_outlined,
     ),
     BelgeTuru(
       'Resmî Yazı',
-      'Kamu kurumları ve diğer kuruluşlar için resmî yazı oluştur.',
+      'Kamu kurumları ve kuruluşlar için yazı taslağı oluştur.',
       Icons.business_outlined,
     ),
   ];
@@ -83,12 +85,13 @@ class AnaSayfa extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
+            tooltip: 'Hakkında',
             icon: const Icon(Icons.info_outline),
             onPressed: () {
               showAboutDialog(
                 context: context,
                 applicationName: 'Dilekçe Asistanı',
-                applicationVersion: '2.0 AI',
+                applicationVersion: '2.1 AI',
                 children: const [
                   Text('Geliştiren: Fatih Demirel'),
                 ],
@@ -100,28 +103,26 @@ class AnaSayfa extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Card(
+          const Card(
             child: Padding(
-              padding: const EdgeInsets.all(18),
+              padding: EdgeInsets.all(18),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.auto_awesome, size: 36),
-                  const SizedBox(height: 10),
-                  const Text(
+                  Icon(Icons.auto_awesome, size: 36),
+                  SizedBox(height: 10),
+                  Text(
                     'AI Belge Asistanı',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(
-                    'Olayı kendi cümlelerinle anlat. Yapay zekâ bilgileri değerlendirerek belge türüne uygun profesyonel bir taslak hazırlasın.',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.grey.shade700,
-                    ),
+                    'Olayı kendi cümlelerinle anlat. Yapay zekâ, '
+                    'belge türüne uygun bir taslak hazırlasın.',
+                    style: TextStyle(fontSize: 15),
                   ),
                 ],
               ),
@@ -132,21 +133,25 @@ class AnaSayfa extends StatelessWidget {
             (belge) => Card(
               margin: const EdgeInsets.only(bottom: 10),
               child: ListTile(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 leading: CircleAvatar(
                   child: Icon(belge.icon),
                 ),
                 title: Text(
                   belge.baslik,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 subtitle: Text(belge.aciklama),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
+                    MaterialPageRoute<void>(
                       builder: (_) => BelgeOlusturSayfasi(
                         belgeTuru: belge.baslik,
                       ),
@@ -179,11 +184,14 @@ class BelgeOlusturSayfasi extends StatefulWidget {
   });
 
   @override
-  State<BelgeOlusturSayfasi> createState() => _BelgeOlusturSayfasiState();
+  State<BelgeOlusturSayfasi> createState() =>
+      _BelgeOlusturSayfasiState();
 }
 
-class _BelgeOlusturSayfasiState extends State<BelgeOlusturSayfasi> {
-  final TextEditingController anlatimController = TextEditingController();
+class _BelgeOlusturSayfasiState
+    extends State<BelgeOlusturSayfasi> {
+  final TextEditingController anlatimController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -197,15 +205,20 @@ class _BelgeOlusturSayfasiState extends State<BelgeOlusturSayfasi> {
     if (anlatim.length < 10) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Lütfen olayı veya talebinizi biraz daha ayrıntılı anlatın.'),
+          content: Text(
+            'Lütfen olayınızı veya talebinizi '
+            'biraz daha ayrıntılı anlatın.',
+          ),
         ),
       );
       return;
     }
 
+    FocusScope.of(context).unfocus();
+
     Navigator.push(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<void>(
         builder: (_) => SonucSayfasi(
           belgeTuru: widget.belgeTuru,
           kullaniciAnlatimi: anlatim,
@@ -217,21 +230,21 @@ class _BelgeOlusturSayfasiState extends State<BelgeOlusturSayfasi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.belgeTuru),
-      ),
+      appBar: AppBar(title: Text(widget.belgeTuru)),
       body: ListView(
         padding: const EdgeInsets.all(18),
         children: [
           Text(
             'Ne olduğunu anlatın',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(context)
+                .textTheme
+                .headlineSmall
+                ?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           const Text(
-            'Resmî dil kullanmanız gerekmez. Olayı, sorununuzu, ne istediğinizi ve önemli tarihleri kendi cümlelerinizle yazabilirsiniz.',
+            'Resmî dil kullanmanız gerekmez. Olayı, talebinizi, '
+            'başvuracağınız kurumu ve önemli tarihleri yazın.',
           ),
           const SizedBox(height: 18),
           TextField(
@@ -242,7 +255,11 @@ class _BelgeOlusturSayfasiState extends State<BelgeOlusturSayfasi> {
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText:
-                  'Örnek: İşe giderken yoğun trafik nedeniyle 10 dakika geciktim. İşveren benden yazılı savunma istedi. Gecikmenin kasıtlı olmadığını ve ilk kez yaşandığını belirtmek istiyorum.',
+                  'Örnek: İşe giderken yoğun trafik nedeniyle '
+                  '10 dakika geciktim. Benden yazılı savunma '
+                  'istendi. İdari ve Mali İşler Daire '
+                  'Başkanlığına sunacağım bir savunma '
+                  'taslağı hazırlamak istiyorum.',
             ),
           ),
           const SizedBox(height: 18),
@@ -256,7 +273,15 @@ class _BelgeOlusturSayfasiState extends State<BelgeOlusturSayfasi> {
           ),
           const SizedBox(height: 12),
           const Text(
-            'Hukuki başvurularda uygulama genel bilgilendirme ve taslak oluşturma amacı taşır. Başvuru mercii ve süreler somut olaya göre ayrıca kontrol edilmelidir.',
+            'Belge hazırlamak için yazdığınız bilgiler '
+            'yapay zekâ hizmetine gönderilir. '
+            'Gereksiz kişisel bilgileri paylaşmayın.',
+            style: TextStyle(fontSize: 12),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Oluşturulan metin bir taslaktır. Kullanmadan önce '
+            'bilgileri, başvuru merciini ve süreleri kontrol edin.',
             style: TextStyle(fontSize: 12),
           ),
         ],
@@ -265,7 +290,7 @@ class _BelgeOlusturSayfasiState extends State<BelgeOlusturSayfasi> {
   }
 }
 
-class SonucSayfasi extends StatelessWidget {
+class SonucSayfasi extends StatefulWidget {
   final String belgeTuru;
   final String kullaniciAnlatimi;
 
@@ -276,71 +301,166 @@ class SonucSayfasi extends StatelessWidget {
   });
 
   @override
+  State<SonucSayfasi> createState() => _SonucSayfasiState();
+}
+
+class _SonucSayfasiState extends State<SonucSayfasi> {
+  bool yukleniyor = true;
+  String? belge;
+  String? hata;
+
+  @override
+  void initState() {
+    super.initState();
+    belgeHazirla();
+  }
+
+  Future<void> belgeHazirla() async {
+    setState(() {
+      yukleniyor = true;
+      hata = null;
+      belge = null;
+    });
+
+    try {
+      final sonuc = await AiService.belgeOlustur(
+        belgeTuru: widget.belgeTuru,
+        kullaniciAnlatimi: widget.kullaniciAnlatimi,
+      );
+
+      if (sonuc.trim().isEmpty) {
+        throw Exception('Sunucudan boş belge geldi.');
+      }
+
+      if (!mounted) return;
+
+      setState(() {
+        belge = sonuc;
+        yukleniyor = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        hata = e.toString().replaceFirst('Exception: ', '');
+        yukleniyor = false;
+      });
+    }
+  }
+
+  Future<void> metniKopyala() async {
+    final metin = belge;
+    if (metin == null) return;
+
+    try {
+      await Clipboard.setData(ClipboardData(text: metin));
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Belge metni kopyalandı.'),
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Kopyalama yapılamadı. Metne uzun basarak '
+            'seçip kopyalayabilirsiniz.',
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Belge Sonucu'),
-      ),
+      appBar: AppBar(title: const Text('Belge Sonucu')),
       body: ListView(
         padding: const EdgeInsets.all(18),
         children: [
-          const Icon(
-            Icons.cloud_outlined,
-            size: 60,
-          ),
-          const SizedBox(height: 18),
-          const Text(
-            'AI bağlantısı kurulacak',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
+          if (yukleniyor) ...[
+            const SizedBox(height: 40),
+            const Center(
+              child: CircularProgressIndicator(),
             ),
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            'Bu ekran artık sabit şablon üretmiyor. Güvenli AI sunucusu bağlandığında anlatımınız yapay zekâya gönderilecek ve profesyonel belge burada oluşturulacak.',
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    belgeTuru,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                    ),
-                  ),
-                  const Divider(),
-                  Text(kullaniciAnlatimi),
-                ],
+            const SizedBox(height: 24),
+            const Text(
+              'Belgeniz hazırlanıyor…',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
+            const SizedBox(height: 12),
+            const Text(
+              'Yapay zekânın yanıtı bekleniyor.',
+              textAlign: TextAlign.center,
+            ),
+          ],
+          if (hata != null) ...[
+            const Icon(
+              Icons.error_outline,
+              size: 56,
+              color: Colors.red,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Belge hazırlanamadı',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            SelectableText(
+              hata!,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            FilledButton.icon(
+              onPressed: belgeHazirla,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Tekrar Dene'),
+            ),
+          ],
+          if (belge != null) ...[
+            Text(
+              widget.belgeTuru,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: SelectableText(
+                  belge!,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    height: 1.6,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            FilledButton.icon(
+              onPressed: metniKopyala,
+              icon: const Icon(Icons.content_copy),
+              label: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Text('Metni Kopyala'),
+              ),
+            ),
+          ],
           const SizedBox(height: 20),
-          FilledButton.icon(
-            onPressed: null,
-            icon: const Icon(Icons.content_copy),
-            label: const Text('Metni Kopyala'),
-          ),
-          const SizedBox(height: 10),
-          OutlinedButton.icon(
-            onPressed: null,
-            icon: const Icon(Icons.description_outlined),
-            label: const Text('Word Oluştur'),
-          ),
-          const SizedBox(height: 10),
-          OutlinedButton.icon(
-            onPressed: null,
-            icon: const Icon(Icons.picture_as_pdf_outlined),
-            label: const Text('PDF Oluştur'),
-          ),
-          const SizedBox(height: 10),
           OutlinedButton.icon(
             onPressed: () => Navigator.pop(context),
             icon: const Icon(Icons.edit_outlined),
