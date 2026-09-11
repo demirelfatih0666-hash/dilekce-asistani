@@ -1,3 +1,5 @@
+
+                 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,11 +19,6 @@ class DilekceAsistani extends StatelessWidget {
         useMaterial3: true,
         colorSchemeSeed: const Color(0xFF173B67),
         scaffoldBackgroundColor: const Color(0xFFF7F8FC),
-        inputDecorationTheme: const InputDecorationTheme(
-          border: OutlineInputBorder(),
-          filled: true,
-          fillColor: Colors.white,
-        ),
       ),
       home: const AnaSayfa(),
     );
@@ -40,6 +37,24 @@ enum BelgeTuru {
 class AnaSayfa extends StatelessWidget {
   const AnaSayfa({super.key});
 
+  void ac(
+    BuildContext context,
+    BelgeTuru tur,
+    String baslik,
+    String aciklama,
+  ) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BelgeFormu(
+          tur: tur,
+          baslik: baslik,
+          aciklama: aciklama,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,147 +65,169 @@ class AnaSayfa extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Container(
-            padding: const EdgeInsets.all(22),
-            decoration: BoxDecoration(
-              color: const Color(0xFF173B67),
-              borderRadius: BorderRadius.circular(22),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            const SizedBox(height: 8),
+            const Icon(
+              Icons.description_outlined,
+              size: 78,
+              color: Color(0xFF173B67),
             ),
-            child: const Column(
-              children: [
-                CircleAvatar(
-                  radius: 35,
-                  backgroundColor: Colors.white,
-                  child: Icon(
-                    Icons.description_outlined,
-                    size: 43,
-                    color: Color(0xFF173B67),
-                  ),
-                ),
-                SizedBox(height: 15),
-                Text(
-                  'Resmî belgenizi kolayca hazırlayın',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 7),
-                Text(
-                  'Belge türünü seçin, bilgilerinizi girin ve metninizi oluşturun.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70),
-                ),
-              ],
+            const SizedBox(height: 18),
+            const Text(
+              'Resmî başvurunuzu kolayca hazırlayın',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-
-          _menu(
-            context,
-            Icons.edit_document,
-            'Dilekçe Hazırla',
-            'Kamu ve özel kurumlara başvuru',
-            BelgeTuru.dilekce,
-          ),
-          _menu(
-            context,
-            Icons.gavel,
-            'Savunma Hazırla',
-            'Disiplin ve işyeri savunması',
-            BelgeTuru.savunma,
-          ),
-          _menu(
-            context,
-            Icons.account_balance,
-            'Resmî Yazı Hazırla',
-            'Resmî yazışma formatında metin',
-            BelgeTuru.resmiYazi,
-          ),
-          _menu(
-            context,
-            Icons.apartment,
-            'Kurum Başvuruları',
-            'Belediye, üniversite ve kamu kurumları',
-            BelgeTuru.kurum,
-          ),
-          _menu(
-            context,
-            Icons.signal_cellular_alt,
-            'Operatör ve İnternet',
-            'GSM, internet ve iletişim hizmetleri',
-            BelgeTuru.operatorInternet,
-          ),
-          _menu(
-            context,
-            Icons.report_problem_outlined,
-            'Şikâyet / İtiraz',
-            'Şikâyet, itiraz ve talep başvuruları',
-            BelgeTuru.sikayetItiraz,
-          ),
-
-          const SizedBox(height: 25),
-          const Divider(),
-          const SizedBox(height: 12),
-
-          const Text(
-            'Dilekçe Asistanı',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+            const SizedBox(height: 12),
+            const Text(
+              'Başvuru türünü seçin. Gerekli bilgileri girin, '
+              'Dilekçe Asistanı belgenizi düzenli bir taslak hâline getirsin.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, height: 1.45),
             ),
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'Geliştiren: Fatih Demirel',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.black54),
-          ),
-          const SizedBox(height: 20),
-        ],
+            const SizedBox(height: 24),
+
+            MenuKarti(
+              ikon: Icons.edit_document,
+              baslik: 'Dilekçe Hazırla',
+              altBaslik: 'Kurum ve kuruluşlara dilekçe oluştur',
+              onTap: () => ac(
+                context,
+                BelgeTuru.dilekce,
+                'Dilekçe Hazırla',
+                'Başvurunuz için gerekli bilgileri girin.',
+              ),
+            ),
+
+            MenuKarti(
+              ikon: Icons.gavel,
+              baslik: 'Savunma Hazırla',
+              altBaslik: 'Disiplin ve işyeri savunması oluştur',
+              onTap: () => ac(
+                context,
+                BelgeTuru.savunma,
+                'Savunma Hazırla',
+                'Savunmaya konu olayın ayrıntılarını yazın.',
+              ),
+            ),
+
+            MenuKarti(
+              ikon: Icons.account_balance,
+              baslik: 'Resmî Yazı Hazırla',
+              altBaslik: 'Resmî kurumlara uygun yazı oluştur',
+              onTap: () => ac(
+                context,
+                BelgeTuru.resmiYazi,
+                'Resmî Yazı Hazırla',
+                'Resmî yazının konusu ve talebinizi belirtin.',
+              ),
+            ),
+
+            MenuKarti(
+              ikon: Icons.apartment,
+              baslik: 'Kurum Başvuruları',
+              altBaslik: 'Belediye, üniversite ve kamu kurumları',
+              onTap: () => ac(
+                context,
+                BelgeTuru.kurum,
+                'Kurum Başvurusu',
+                'Başvuru yapacağınız kurumu ve talebinizi yazın.',
+              ),
+            ),
+
+            MenuKarti(
+              ikon: Icons.cell_tower,
+              baslik: 'GSM ve İnternet',
+              altBaslik: 'Operatör ve internet hizmeti başvuruları',
+              onTap: () => ac(
+                context,
+                BelgeTuru.operatorInternet,
+                'GSM / İnternet Başvurusu',
+                'Operatör veya internet hizmetiyle ilgili sorununuzu yazın.',
+              ),
+            ),
+
+            MenuKarti(
+              ikon: Icons.report_problem_outlined,
+              baslik: 'Şikâyet ve İtiraz',
+              altBaslik: 'Şikâyet, itiraz ve talep metni oluştur',
+              onTap: () => ac(
+                context,
+                BelgeTuru.sikayetItiraz,
+                'Şikâyet / İtiraz',
+                'Şikâyet veya itirazınıza ilişkin bilgileri girin.',
+              ),
+            ),
+
+            const SizedBox(height: 28),
+            const Divider(),
+            const SizedBox(height: 12),
+            const Text(
+              'Dilekçe Asistanı',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              'Geliştiren: Fatih Demirel',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black54),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
+}
 
-  Widget _menu(
-    BuildContext context,
-    IconData icon,
-    String baslik,
-    String aciklama,
-    BelgeTuru tur,
-  ) {
+class MenuKarti extends StatelessWidget {
+  final IconData ikon;
+  final String baslik;
+  final String altBaslik;
+  final VoidCallback onTap;
+
+  const MenuKarti({
+    super.key,
+    required this.ikon,
+    required this.baslik,
+    required this.altBaslik,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 13),
       child: ListTile(
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
-        leading: CircleAvatar(
-          backgroundColor: const Color(0xFFE7EEF7),
-          child: Icon(icon, color: const Color(0xFF173B67)),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 18,
+          vertical: 10,
+        ),
+        leading: Icon(
+          ikon,
+          size: 34,
+          color: const Color(0xFF173B67),
         ),
         title: Text(
           baslik,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
         ),
-        subtitle: Text(aciklama),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Text(altBaslik),
+        ),
         trailing: const Icon(Icons.chevron_right),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => BelgeFormu(
-                tur: tur,
-                baslik: baslik,
-              ),
-            ),
-          );
-        },
+        onTap: onTap,
       ),
     );
   }
@@ -199,11 +236,13 @@ class AnaSayfa extends StatelessWidget {
 class BelgeFormu extends StatefulWidget {
   final BelgeTuru tur;
   final String baslik;
+  final String aciklama;
 
   const BelgeFormu({
     super.key,
     required this.tur,
     required this.baslik,
+    required this.aciklama,
   });
 
   @override
@@ -211,13 +250,10 @@ class BelgeFormu extends StatefulWidget {
 }
 
 class _BelgeFormuState extends State<BelgeFormu> {
-  final _formKey = GlobalKey<FormState>();
-
   final adSoyad = TextEditingController();
   final tcKimlik = TextEditingController();
   final adres = TextEditingController();
   final telefon = TextEditingController();
-  final eposta = TextEditingController();
   final kurum = TextEditingController();
   final konu = TextEditingController();
   final olay = TextEditingController();
@@ -229,7 +265,6 @@ class _BelgeFormuState extends State<BelgeFormu> {
     tcKimlik.dispose();
     adres.dispose();
     telefon.dispose();
-    eposta.dispose();
     kurum.dispose();
     konu.dispose();
     olay.dispose();
@@ -237,112 +272,212 @@ class _BelgeFormuState extends State<BelgeFormu> {
     super.dispose();
   }
 
-  String get kurumEtiketi {
+  String belgeBasligi() {
     switch (widget.tur) {
-      case BelgeTuru.operatorInternet:
-        return 'Operatör / İnternet Sağlayıcısı';
+      case BelgeTuru.dilekce:
+        return 'DİLEKÇE';
       case BelgeTuru.savunma:
-        return 'İşyeri / Kurum';
-      default:
-        return 'Başvurulacak Kurum';
+        return 'SAVUNMA';
+      case BelgeTuru.resmiYazi:
+        return 'RESMÎ YAZI';
+      case BelgeTuru.kurum:
+        return 'KURUM BAŞVURUSU';
+      case BelgeTuru.operatorInternet:
+        return 'GSM / İNTERNET HİZMETİ BAŞVURUSU';
+      case BelgeTuru.sikayetItiraz:
+        return 'ŞİKÂYET / İTİRAZ BAŞVURUSU';
     }
+  }
+
+  String anaMetin() {
+    final olayMetni = olay.text.trim();
+    final talepMetni = talep.text.trim();
+
+    switch (widget.tur) {
+      case BelgeTuru.savunma:
+        return '''
+Tarafıma bildirilen hususa ilişkin açıklamalarım aşağıdadır:
+
+$olayMetni
+
+Yukarıda açıkladığım hususların değerlendirilmesini, savunmamın dikkate alınmasını arz ederim.
+
+$talepMetni''';
+
+      case BelgeTuru.sikayetItiraz:
+        return '''
+$olayMetni
+
+Yukarıda açıkladığım nedenlerle konuya ilişkin gerekli incelemenin yapılmasını ve aşağıda belirttiğim talebimin değerlendirilmesini arz ederim.
+
+$talepMetni''';
+
+      case BelgeTuru.operatorInternet:
+        return '''
+Kullanmakta olduğum elektronik haberleşme / internet hizmetine ilişkin yaşadığım sorun aşağıda açıklanmıştır:
+
+$olayMetni
+
+Sorunun incelenerek giderilmesini ve aşağıdaki talebimin değerlendirilmesini arz ederim.
+
+$talepMetni''';
+
+      default:
+        return '''
+$olayMetni
+
+Yukarıda açıkladığım hususlar doğrultusunda aşağıda belirttiğim talebimin değerlendirilmesini arz ederim.
+
+$talepMetni''';
+    }
+  }
+
+  String belgeOlustur() {
+    final kurumAdi = kurum.text.trim().isEmpty
+        ? 'İLGİLİ MAKAMA'
+        : kurum.text.trim().toUpperCase();
+
+    final konuMetni = konu.text.trim().isEmpty
+        ? 'Başvuru'
+        : konu.text.trim();
+
+    final tcSatiri = tcKimlik.text.trim().isEmpty
+        ? ''
+        : '\nT.C. Kimlik No: ${tcKimlik.text.trim()}';
+
+    final telefonSatiri = telefon.text.trim().isEmpty
+        ? ''
+        : '\nTelefon: ${telefon.text.trim()}';
+
+    final adresSatiri = adres.text.trim().isEmpty
+        ? ''
+        : '\nAdres: ${adres.text.trim()}';
+
+    return '''
+$kurumAdi
+
+${belgeBasligi()}
+
+Konu: $konuMetni
+
+${anaMetin()}
+
+Ad Soyad: ${adSoyad.text.trim()}$tcSatiri$telefonSatiri$adresSatiri
+
+Tarih: .... / .... / ........
+
+İmza:
+''';
+  }
+
+  void hazirla() {
+    if (adSoyad.text.trim().isEmpty ||
+        olay.text.trim().isEmpty ||
+        talep.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Lütfen ad soyad, açıklama ve talep alanlarını doldurun.',
+          ),
+        ),
+      );
+      return;
+    }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => SonucSayfasi(
+          baslangicMetni: belgeOlustur(),
+        ),
+      ),
+    );
+  }
+
+  Widget alan(
+    TextEditingController controller,
+    String etiket, {
+    int satir = 1,
+    TextInputType? klavye,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: TextField(
+        controller: controller,
+        maxLines: satir,
+        keyboardType: klavye,
+        decoration: InputDecoration(
+          labelText: etiket,
+          border: const OutlineInputBorder(),
+          filled: true,
+          fillColor: Colors.white,
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.baslik)),
-      body: Form(
-        key: _formKey,
+      appBar: AppBar(
+        title: Text(widget.baslik),
+      ),
+      body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            const Text(
-              'Başvuru Bilgileri',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+            Text(
+              widget.aciklama,
+              style: const TextStyle(fontSize: 16),
             ),
-            const SizedBox(height: 6),
-            const Text(
-              'Belgenin hazırlanması için aşağıdaki bilgileri doldurun.',
-              style: TextStyle(color: Colors.black54),
-            ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 18),
 
-            _alan(
-              adSoyad,
-              'Ad Soyad *',
-              Icons.person_outline,
-              zorunlu: true,
-            ),
-            _alan(
-              tcKimlik,
-              'T.C. Kimlik No (isteğe bağlı)',
-              Icons.badge_outlined,
-              klavye: TextInputType.number,
-            ),
-            _alan(
-              adres,
-              'Adres',
-              Icons.home_outlined,
-              satir: 2,
-            ),
-            _alan(
-              telefon,
-              'Telefon',
-              Icons.phone_outlined,
-              klavye: TextInputType.phone,
-            ),
-            _alan(
-              eposta,
-              'E-posta',
-              Icons.email_outlined,
-              klavye: TextInputType.emailAddress,
-            ),
-            _alan(
-              kurum,
-              '$kurumEtiketi *',
-              Icons.account_balance_outlined,
-              zorunlu: true,
-            ),
-            _alan(
-              konu,
-              'Konu *',
-              Icons.subject,
-              zorunlu: true,
-            ),
-            _alan(
+            alan(adSoyad, 'Ad Soyad *'),
+            alan(tcKimlik, 'T.C. Kimlik No (isteğe bağlı)',
+                klavye: TextInputType.number),
+            alan(telefon, 'Telefon (isteğe bağlı)',
+                klavye: TextInputType.phone),
+            alan(adres, 'Adres (isteğe bağlı)', satir: 2),
+            alan(kurum, 'Başvurulacak kurum / kuruluş'),
+            alan(konu, 'Konu'),
+
+            alan(
               olay,
               widget.tur == BelgeTuru.savunma
-                  ? 'Savunmaya konu olay ve açıklamanız *'
-                  : 'Olay / Açıklama *',
-              Icons.notes,
-              zorunlu: true,
-              satir: 5,
-            ),
-            _alan(
-              talep,
-              widget.tur == BelgeTuru.savunma
-                  ? 'Sonuç / Talebiniz'
-                  : 'Talebiniz *',
-              Icons.check_circle_outline,
-              zorunlu: widget.tur != BelgeTuru.savunma,
-              satir: 3,
+                  ? 'Olayı ve savunmanızı ayrıntılı anlatın *'
+                  : 'Olayı / başvuru nedenini ayrıntılı anlatın *',
+              satir: 6,
             ),
 
-            const SizedBox(height: 10),
+            alan(
+              talep,
+              'Talebiniz / sonuç olarak istediğiniz işlem *',
+              satir: 4,
+            ),
+
+            const SizedBox(height: 6),
 
             FilledButton.icon(
-              onPressed: _belgeOlustur,
+              onPressed: hazirla,
               icon: const Icon(Icons.auto_awesome),
               label: const Padding(
                 padding: EdgeInsets.symmetric(vertical: 14),
                 child: Text(
-                  'BELGEYİ OLUŞTUR',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  'Belgeyi Hazırla',
+                  style: TextStyle(fontSize: 17),
                 ),
+              ),
+            ),
+
+            const SizedBox(height: 12),
+
+            const Text(
+              'Hazırlanan metni göndermeden önce bilgilerin doğruluğunu '
+              'kontrol etmeniz önerilir.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black54,
+                fontSize: 12,
               ),
             ),
           ],
@@ -350,215 +485,14 @@ class _BelgeFormuState extends State<BelgeFormu> {
       ),
     );
   }
-
-  Widget _alan(
-    TextEditingController controller,
-    String label,
-    IconData icon, {
-    bool zorunlu = false,
-    int satir = 1,
-    TextInputType? klavye,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 13),
-      child: TextFormField(
-        controller: controller,
-        maxLines: satir,
-        keyboardType: klavye,
-        decoration: InputDecoration(
-          labelText: label,
-          prefixIcon: satir == 1 ? Icon(icon) : null,
-          alignLabelWithHint: true,
-        ),
-        validator: zorunlu
-            ? (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Bu alanı doldurun.';
-                }
-                return null;
-              }
-            : null,
-      ),
-    );
-  }
-
-  void _belgeOlustur() {
-    if (!_formKey.currentState!.validate()) return;
-
-    final metin = _metinHazirla();
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => SonucSayfasi(
-          baslik: widget.baslik,
-          metin: metin,
-        ),
-      ),
-    );
-  }
-
-  String _bugun() {
-    final tarih = DateTime.now();
-    return '${tarih.day.toString().padLeft(2, '0')}.'
-        '${tarih.month.toString().padLeft(2, '0')}.'
-        '${tarih.year}';
-  }
-
-  String _kisiBilgileri() {
-    final bilgiler = <String>[];
-
-    bilgiler.add('Ad Soyad: ${adSoyad.text.trim()}');
-
-    if (tcKimlik.text.trim().isNotEmpty) {
-      bilgiler.add('T.C. Kimlik No: ${tcKimlik.text.trim()}');
-    }
-    if (adres.text.trim().isNotEmpty) {
-      bilgiler.add('Adres: ${adres.text.trim()}');
-    }
-    if (telefon.text.trim().isNotEmpty) {
-      bilgiler.add('Telefon: ${telefon.text.trim()}');
-    }
-    if (eposta.text.trim().isNotEmpty) {
-      bilgiler.add('E-posta: ${eposta.text.trim()}');
-    }
-
-    return bilgiler.join('\n');
-  }
-
-  String _metinHazirla() {
-    final hedef = kurum.text.trim().toUpperCase();
-    final konuMetni = konu.text.trim();
-    final olayMetni = olay.text.trim();
-    final talepMetni = talep.text.trim();
-
-    switch (widget.tur) {
-      case BelgeTuru.savunma:
-        return '''
-$hedef
-
-Konu: $konuMetni
-
-SAVUNMA
-
-Tarafıma bildirilen hususlara ilişkin açıklamalarım aşağıdadır.
-
-$olayMetni
-
-${talepMetni.isNotEmpty ? 'Sonuç ve Talep:\n$talepMetni\n' : ''}
-Yukarıda açıkladığım hususların değerlendirilmesini ve savunmamın dikkate alınmasını arz ederim.
-
-Tarih: ${_bugun()}
-
-${_kisiBilgileri()}
-
-İmza:
-''';
-
-      case BelgeTuru.resmiYazi:
-        return '''
-$hedef
-
-Konu: $konuMetni
-
-$olayMetni
-
-Talep:
-$talepMetni
-
-Bilgilerinize arz ederim.
-
-Tarih: ${_bugun()}
-
-${_kisiBilgileri()}
-
-İmza:
-''';
-
-      case BelgeTuru.operatorInternet:
-        return '''
-$hedef MÜŞTERİ HİZMETLERİ / İLGİLİ BİRİME
-
-Konu: $konuMetni
-
-Sayın Yetkili,
-
-Kullanmakta olduğum iletişim hizmetine ilişkin yaşadığım sorun aşağıda açıklanmıştır:
-
-$olayMetni
-
-Talebim:
-$talepMetni
-
-Başvurumun incelenerek gerekli işlemlerin yapılmasını ve sonucundan tarafıma bilgi verilmesini talep ederim.
-
-Tarih: ${_bugun()}
-
-${_kisiBilgileri()}
-
-İmza:
-''';
-
-      case BelgeTuru.sikayetItiraz:
-        return '''
-$hedef
-
-Konu: $konuMetni
-
-ŞİKÂYET / İTİRAZ BAŞVURUSU
-
-Açıklamalar:
-
-$olayMetni
-
-Talep ve Sonuç:
-
-$talepMetni
-
-Yukarıda açıkladığım hususlar doğrultusunda başvurumun incelenerek gereğinin yapılmasını ve sonucunun tarafıma bildirilmesini arz ederim.
-
-Tarih: ${_bugun()}
-
-${_kisiBilgileri()}
-
-İmza:
-''';
-
-      case BelgeTuru.kurum:
-      case BelgeTuru.dilekce:
-        return '''
-$hedef
-
-Konu: $konuMetni
-
-AÇIKLAMALAR
-
-$olayMetni
-
-TALEP VE SONUÇ
-
-$talepMetni
-
-Yukarıda arz edilen hususlar doğrultusunda gerekli inceleme ve işlemlerin yapılarak sonucundan tarafıma bilgi verilmesini arz ederim.
-
-Tarih: ${_bugun()}
-
-${_kisiBilgileri()}
-
-İmza:
-''';
-    }
-  }
 }
 
 class SonucSayfasi extends StatefulWidget {
-  final String baslik;
-  final String metin;
+  final String baslangicMetni;
 
   const SonucSayfasi({
     super.key,
-    required this.baslik,
-    required this.metin,
+    required this.baslangicMetni,
   });
 
   @override
@@ -566,23 +500,23 @@ class SonucSayfasi extends StatefulWidget {
 }
 
 class _SonucSayfasiState extends State<SonucSayfasi> {
-  late final TextEditingController controller;
+  late final TextEditingController metin;
 
   @override
   void initState() {
     super.initState();
-    controller = TextEditingController(text: widget.metin.trim());
+    metin = TextEditingController(text: widget.baslangicMetni);
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    metin.dispose();
     super.dispose();
   }
 
-  void _kopyala() async {
+  Future<void> kopyala() async {
     await Clipboard.setData(
-      ClipboardData(text: controller.text),
+      ClipboardData(text: metin.text),
     );
 
     if (!mounted) return;
@@ -600,35 +534,45 @@ class _SonucSayfasiState extends State<SonucSayfasi> {
       appBar: AppBar(
         title: const Text('Hazırlanan Belge'),
       ),
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(14),
-            color: const Color(0xFFE7EEF7),
-            child: const Row(
-              children: [
-                Icon(Icons.info_outline),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    'Metni göndermeden önce bilgilerin doğruluğunu kontrol edin. İsterseniz metni aşağıdan düzenleyebilirsiniz.',
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              const Text(
+                'Metni kontrol edebilir ve isterseniz doğrudan düzenleyebilirsiniz.',
+              ),
+              const SizedBox(height: 12),
+
+              Expanded(
+                child: TextField(
+                  controller: metin,
+                  expands: true,
+                  maxLines: null,
+                  minLines: null,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Colors.white,
                   ),
                 ),
-              ],
-            ),
+              ),
+
+              const SizedBox(height: 12),
+
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton.icon(
+                  onPressed: kopyala,
+                  icon: const Icon(Icons.copy),
+                  label: const Text('Metni Kopyala'),
+                ),
+              ),
+            ],
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: TextField(
-                controller: controller,
-                expands: true,
-                maxLines: null,
-                minLines: null,
-                textAlignVertical: TextAlignVertical.top,
-                decoration: const InputDecoration(
-                  alignLabelWithHint: true,
-                  labelText: 'Belge Metni',
-                  filled: true,
-                 
+        ),
+      ),
+    );
+  }
+}
