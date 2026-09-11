@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "967788982768",
+    "project_id": "hukukasistan-ai",
+    "storage_bucket": "hukukasistan-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967788982768:android:c5a9be121efbccbf9d6d35",
+        "android_client_info": {
+          "package_name": "com.example.hukukasistan_ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH4GiEfZJZ6-HasCv-xy3dl1GzSEaVH8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967788982768:android:024b02f0cdef3de99d6d35",
+        "android_client_info": {
+          "package_name": "com.fatihdemirel.dilekceasistani"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCH4GiEfZJZ6-HasCv-xy3dl1GzSEaVH8Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
